@@ -141,7 +141,8 @@ try:
     from smap.subscriber import subscribe
     from smap.ssl import SslServerContextFactory
     from smap.archiver.server import getSite
-except ImportError:
+except ImportError, e:
+    print e
     pass
 else:
     serviceMaker = ArchiverServiceMaker()
