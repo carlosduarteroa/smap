@@ -35,7 +35,7 @@ import math
 import uuid
 from warnings import warn
 
-from zope.interface import implements
+from zope.interface import implements, implementer
 from twisted.internet.task import cooperate
 from twisted.web import iweb
 
@@ -82,8 +82,10 @@ def load(fp):
     return json.load(fp)
 
 # based on http://jcalderone.livejournal.com/55680.html
+
+@implementer(iweb.IBodyProducer)
 class AsyncJSON(object):
-    implements(iweb.IBodyProducer)
+    #implements(iweb.IBodyProducer)
     content_type = 'application/json'
     content_encoding = None
 
@@ -144,10 +146,10 @@ for i in xrange(0, 10000):
 
 #     for (mod, enc) in tests:
 #         t = timeit.Timer(stmt=enc, setup=setup % mod)
-#         print '%s: %0.03f msec/pass (%s)' % (mod, 1000 * t.timeit(number=N) / N, enc)
+#         print('%s: %0.03f msec/pass (%s)' % (mod, 1000 * t.timeit(number=N) / N, enc))
 
     setup += """
 from __main__ import dumps
 """
     t = timeit.Timer(stmt="dumps(obj)", setup=setup % 'json')
-    print '%s: %0.03f msec/pass (%s)' % ('smap-json', 1000 * t.timeit(number=N) / N, 'SpecialEncoder')
+    print('%s: %0.03f msec/pass (%s)' % ('smap-json', 1000 * t.timeit(number=N) / N, 'SpecialEncoder'))

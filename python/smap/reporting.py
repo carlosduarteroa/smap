@@ -31,7 +31,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
-import urlparse
+from urllib.parse import urlparse
 
 from twisted.internet import reactor, task, defer, threads
 from twisted.internet.endpoints import TCP6ClientEndpoint
@@ -262,7 +262,7 @@ class MongoReportInstance(dict):
                     v = {'time': latest[0], 'value': latest[1], 'uuid': str(d['uuid']), 'Path': key}
                     log.msg(v)
                     self.insert_or_update(v)
-                except Exception, e:
+                except Exception as e:
                     log.msg(e)
         self['PendingData'].truncate()
         if len(self['PendingData']) > 0:
@@ -406,7 +406,7 @@ class PlotlyReportInstance(dict):
         u = urlparse.urlparse(self['ReportDeliveryLocation'][0])
         uri = "http://" + u.netloc 
         streamid = u.path.lstrip('/')
-        print "Publishing plot.ly stream to", uri, "streamid:", streamid
+        print("Publishing plot.ly stream to", uri, "streamid:", streamid)
         self['Publisher'] = PlotlyStream(streamid, uri)
 
     @staticmethod
@@ -488,7 +488,7 @@ class Reporting:
 
         report_class = get_report_class(rpt['ReportDeliveryLocation'])
         if report_class == None:
-            print "No report deliverer found for " + str(rpt['ReportDeliveryLocation'])
+            print("No report deliverer found for " + str(rpt['ReportDeliveryLocation']))
             return 
         else:
             report_instance = report_class(dir, rpt)

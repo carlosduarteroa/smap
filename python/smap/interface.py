@@ -71,7 +71,7 @@ class ITimeseriesFactory(Interface):
         @buffersz how many readings are stored in the Reading resource
         (for GET requests, reporting is handled separately).
         """
-        print "__CALL__"
+        print("__CALL__")
 
 class ICollection(Interface):
     """Represent a collection of resources, with attached metadata

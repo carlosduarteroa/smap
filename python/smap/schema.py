@@ -34,7 +34,7 @@ import os
 import sys
 import json
 import uuid
-from cStringIO import StringIO
+from io import StringIO
 from avro import schema, io
 
 import util
@@ -64,7 +64,7 @@ def load_schema(sf):
             os.path.join(os.path.dirname(sys.modules[__name__].__file__),
                          os.path.join(os.pardir, os.pardir)),
             sys.prefix]
-    #print dirs
+    #print(dirs)
     obj = None
     for d in dirs:
         try:
@@ -170,7 +170,7 @@ def load_report(data):
     v = dreader.read(io.BinaryDecoder(input))
     map(stringify_uuids, v.itervalues())
     remove_none(v)
-    print v
+    print(v)
     return v
 
 

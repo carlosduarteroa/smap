@@ -31,12 +31,12 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import sys
-import urllib2
+# import urllib2
 import urllib
 import operator
 import pprint
 import time
-from StringIO import StringIO
+from io import StringIO
 from warnings import warn
 
 import numpy as np
@@ -71,7 +71,7 @@ def parser(data):
 multiple lines, we need to be careful to do this right and merge the
 results together."""
     rv = {}
-    for line in data.split('\n'):
+    for line in data.decode('utf-8').split('\n'):
         if len(line.strip()) == 0: 
             continue
         line_obj = json.loads(line)
@@ -129,19 +129,22 @@ the result.
 :return: the parsed JSON object returned by the server
 """
         try:
-            fp = urllib2.urlopen(self.base + '/api/query?' + 
-                                 urllib.urlencode(make_qdict(self.key, self.private), 
-                                                  doseq=True),
-                                 data=q, 
-                                 timeout=self.timeout)
+            req = self.base + '/api/query?' + urllib.parse.urlencode(make_qdict(self.key, self.private), doseq=True)
+            #data_q = urllib.parse.urlencode(q).encode('utf-8')
+            fp = urllib.request.urlopen(req, data=q.encode('utf-8'), timeout=self.timeout)
+#            fp = urllib.request.urlopen(self.base + '/api/query?' + 
+#                                 urllib.parse.urlencode(make_qdict(self.key, self.private), 
+#                                                  doseq=True),
+#                                 data=q.encode('utf-8'), 
+#                                 timeout=self.timeout)
             rv = parser(fp.read())
-        except urllib2.HTTPError, err:
+        except urllib.request.HTTPError as err:
             log.err("Bad request running query: ""%s"" " % q)
             raise SmapException("Archiver query HTTP request error %s" % err.code)
         fp.close()
         return rv
 
-    def tags(self, where, tags='*', nest=False, asdict=False):
+    def tags(self, where, tags='*', nest=True, asdict=False):
         """Look up tags associated with a specific query body"""
         log.msg(where)
         tags = self.query('select %s where %s' % (tags, where))
@@ -202,7 +205,7 @@ uuids.  Attempts to use cached data and load missing data in parallel.
                 qdict['starttime'] = [str(region[0][0])]
                 qdict['endtime'] = [str(region[0][1])]
                 dlurl = str(self.base + '/api/data/uuid/' + u + '?' +
-                            urllib.urlencode(qdict, doseq=True))
+                            urllib.parse.urlencode(qdict, doseq=True))
                 if qdict['starttime'][0] != qdict['endtime'][0]:
                     region.append(dlurl)
                     urls.append(dlurl)
@@ -216,15 +219,15 @@ uuids.  Attempts to use cached data and load missing data in parallel.
         rv = []
         for u in uuids:
             loaddata = []
-            for range, url in data[u][0]:
+            for drange, url in data[u][0]:
                 if url != None and len(newdata[url][1]) > 0:
                     assert newdata[url][0] == u
                     loaddata.append(newdata[url][1])
                     # print "downloaded", len(loaddata[-1])
 
-                    if cache and range[0] < now:
+                    if cache and drange[0] < now:
                         c = tscache.TimeseriesCache(u)
-                        c.insert(0, range[0], range[1] if range[1] < now else now, 
+                        c.insert(0, drange[0], drange[1] if drange[1] < now else now, 
                                  loaddata[-1][np.nonzero(loaddata[-1][:,0] < now)])
                         c.close()
                 else:
@@ -234,10 +237,10 @@ uuids.  Attempts to use cached data and load missing data in parallel.
 
             def interleave(x, y):
                 lst = [None] * (len(x) * 2 - 1)
-                for idx in xrange(0, len(x)):
+                for idx in range(0, len(x)):
                     lst[idx * 2] = x[idx]
-                for idx in xrange(0, len(y)):
-                    lst[idx * 2 + 1] = y[idx]
+                for idx, y_val in enumerate(y):
+                    lst[idx * 2 + 1] = y_val
                 return lst
             rv.append(np.vstack(interleave(loaddata, data[u][1])))
 
@@ -365,7 +368,7 @@ programs.  For instance::
                     self.client.datacb(uuids, data)
             except:
                 log.err()
-                print line
+                print(line)
 
         def connectionLost(self, reason):
             self.client._failed()
@@ -400,7 +403,7 @@ before this connecting.
         """
         self.closing = False
         url = self.url + '/republish?' + \
-            urllib.urlencode(make_qdict(self.key, self.private), 
+            urllib.parse.urlencode(make_qdict(self.key, self.private), 
                              doseq=True)
 
         if not self.restrict:

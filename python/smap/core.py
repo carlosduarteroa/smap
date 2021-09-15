@@ -32,7 +32,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 import uuid
-from zope.interface import implements
+from zope.interface import implements, implementer
 from twisted.web import resource
 from twisted.internet import reactor, defer
 import sys
@@ -49,7 +49,7 @@ from smap.interface import *
 from smap.checkers import datacheck
 from util import SmapException, SmapSchemaException
 
-
+@implementer(ITimeseries)
 class Timeseries(dict):
     """Represent a single Timeseries.  A Timeseries is a single stream of
     scalars, with associated units.
@@ -58,7 +58,7 @@ class Timeseries(dict):
     data type (long or double), unit of measure, and
     timezone.
     """
-    implements(ITimeseries)
+    #implements(ITimeseries)
 
     FIELDS = ["Readings", "Description", "Metadata", 
               "Properties", "uuid"]
@@ -285,7 +285,7 @@ Can be called with 1, 2, or 3 arguments.  The forms are
 
         try:
             val = self.impl.translate_state(state)
-        except Exception, e:
+        except Exception as e:
             raise SmapException("Error processing write result: " + str(e), 500)
 
         if self.autoadd:
@@ -296,9 +296,10 @@ Can be called with 1, 2, or 3 arguments.  The forms are
             ts['Readings'] = [(now, val)]
             return ts
 
+@implementer(ICollection)
 class Collection(dict):
     """Represent a collection of sMAP resources"""
-    implements(ICollection)
+    #implements(ICollection)
     def __init__(self, path, inst=None, description=None, *args):
         """
         :param string path: the path where the collection will be added
@@ -370,12 +371,13 @@ class LoggingTimeseries(object):
     def latest(self):
         return self.last
 
+@implementer(ISmapInstance)
 class SmapInstance:
     """A sMAP instance is a tree of :py:class:`Collections` and
 :py:class:`Timeseries`.  A :py:class:`SmapInstance` allows lookups
 based on either path or UUID, and also contains a reference to the
 sMAP reporting functionality."""
-    implements(ISmapInstance)
+    #implements(ISmapInstance)
 
     def __init__(self, root_uuid, **kwargs):
         if not isinstance(root_uuid, uuid.UUID):
@@ -557,7 +559,7 @@ sMAP reporting functionality."""
         """
         try:
             return self.get_timeseries(path).add(*args, **kwargs)
-        except AttributeError, e:
+        except AttributeError as e:
             raise SmapException("add failed: no such path: %s" % path)
 
     def _add_parents(self, path):
@@ -697,18 +699,18 @@ if __name__ == '__main__':
 
     t.add(util.now(), 12)
     t.add(util.now(), 13)
-    print s.get_timeseries(t['uuid'])
-    print s.get_timeseries('/sensor0')
-    print s.get_timeseries('/')
+    print(s.get_timeseries(t['uuid']))
+    print(s.get_timeseries('/sensor0'))
+    print(s.get_timeseries('/'))
 
 #    s.get_collection('/').set_metadata({'Extra' : {"foo": " bar"}})
-    print s.get_collection('/')
+    print(s.get_collection('/'))
 
 
 #     print "Finding all Timeseries under /"
-    print s._lookup_r('/', pred=ITimeseries.providedBy)
-    print s.lookup('/+Timeseries')
+    print(s._lookup_r('/', pred=ITimeseries.providedBy))
+    print(s.lookup('/+Timeseries'))
 
-    print s._lookup_r('/', pred=lambda x: x.dirty)
+    print(s._lookup_r('/', pred=lambda x: x.dirty))
 
     # print s._lookup_r("/foo")

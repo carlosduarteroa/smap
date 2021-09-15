@@ -81,7 +81,7 @@ class TimeseriesCache:
         key = "%i-%i" % (start, end)
         substream = str(substream)
         if len(data) == 0: return
-        if not self.cache.has_key(substream):
+        if not self.cache.__contains__(substream):
             self.cache[substream] = {key:  data}
         else:
             # do this due to copy issues with shelve

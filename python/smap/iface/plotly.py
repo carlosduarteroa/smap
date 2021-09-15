@@ -1,7 +1,7 @@
 
 import json
 
-from zope.interface import implements
+from zope.interface import implements, implementer
 from twisted.python.util import println
 from twisted.python import log
 from twisted.internet import reactor
@@ -14,11 +14,12 @@ from twisted.internet.task import LoopingCall
 
 from smap.util import FixedSizeList
 
+@implementer(IBodyProducer)
 class PlotlyStreamProducer(object):
     """Implements a producer that copies from a buffer to a plot.ly
     connection.
     """
-    implements(IBodyProducer)
+    #implements(IBodyProducer)
     length = UNKNOWN_LENGTH
 
     def __init__(self, buffer, start_callback=None):

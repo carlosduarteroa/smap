@@ -31,8 +31,8 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
-import urllib2
-import urlparse
+import urllib.request as urllib2
+from urllib.parse import urlparse
 from binascii import hexlify
 import hashlib
 import json
@@ -47,8 +47,8 @@ CACHEDIR='cache'
 
 def load_http(url, cache=False, auth=None, data=None, as_fp=False, verbose=False):
     name = hashlib.md5()
-    name.update(url)
-    cachename = os.path.join(CACHEDIR,  hexlify(name.digest()))
+    name.update(url.encode('utf-8'))
+    cachename = os.path.join(CACHEDIR.encode('utf-8'),  hexlify(name.digest()))
     if os.access(cachename, os.W_OK | os.R_OK) and cache and not data:
         if not os.access(CACHEDIR, os.W_OK):
             os.makedirs(CACHEDIR)
@@ -76,8 +76,8 @@ def load_http(url, cache=False, auth=None, data=None, as_fp=False, verbose=False
                 data = pagefp.read()
                 pagefp.close();
                 return data
-        except Exception, e:
-            print e
+        except Exception as e:
+            print(e)
             return None
 
         if cache and not data:

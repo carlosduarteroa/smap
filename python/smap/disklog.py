@@ -61,7 +61,7 @@ class DiskLog:
     def _read_seqno(self, seq):
         try:
             return util.pickle_load(os.path.join(self.dirname, snp(seq)))
-        except IOError, e:
+        except IOError as e:
             log.err("Warning: got exception reading sequence number: " + str(e))
             return None
 

@@ -42,7 +42,7 @@ authentication, and annotate their get and set methods with the
 appropriate capabilities necessary to access those resources.
 """
 import time
-import urlparse
+from urllib.parse import urlparse
 import traceback
 
 from twisted.internet import defer
@@ -220,14 +220,14 @@ if __name__ == '__main__':
             BinaryActuator.setup(self, opts)
 
         def get_state(self, request):
-            print request
-            print "getting"
+            print(request)
+            print("getting")
             self.add(self.state)
             return self.state
         
         @authenticated(["__has_ssl__"])
         def set_state(self, request, state):
-            print "Setting state to", request,state
+            print("Setting state to", request,state)
             self.state = state
             return self.state
 
