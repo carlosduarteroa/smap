@@ -32,7 +32,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os, sys
 import uuid
-import ConfigParser
+from configparser import ConfigParser
 import configobj
 
 try:
@@ -40,11 +40,11 @@ try:
 except ImportError:
     import collections as ordereddict
 
-import core
-import util
-import driver
-import smapconf
-import checkers
+import smap.core as core
+import smap.util as util
+import smap.driver as driver
+import smap.smapconf as smapconf
+import smap.checkers as checkers
 
 class SmapLoadError(core.SmapException):
     """An error was encountered loading a config file"""

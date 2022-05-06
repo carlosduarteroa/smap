@@ -34,23 +34,25 @@ import uuid
 import datetime
 import time
 import sys
-import urlparse
-import urllib2
+import urllib
+import urllib.request
+from urllib.parse import urlparse
 from twisted.internet import reactor, threads, defer
 from twisted.python.util import println
 from twisted.python import log
-from zope.interface import implements
+from zope.interface import implements, implementer
 
-from interface import *
-import core
-import util
-import loader
+from smap.interface import *
+import smap.core as core
+import smap.util as util
+import smap.loader as loader
 from smap.contrib import dtutil
 
+@implementer(ISmapInstance)
 class SmapDriver(object):
     # this is actually a shim layer which presents a ISmapInstance to
     # drivers
-    implements(ISmapInstance)
+    #implements(ISmapInstance)
     load_chunk_size = datetime.timedelta(days=1)
 
     @classmethod
@@ -226,14 +228,14 @@ class FetchDriver(SmapDriver):
 
     def open_url(self):
         """Open a URL using urllib2, potentially sending HTTP authentication"""
-        mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
+        mgr = urllib.request.HTTPPasswordMgrWithDefaultRealm()
         url_p = urlparse.urlparse(self.uri)
         # parse out the username and password (if present) and
         # reconstruct a url which urllib2 will accept
         if url_p.username and url_p.password:
             mgr.add_password(None, url_p.hostname, url_p.username, url_p.password)
-        handler = urllib2.HTTPBasicAuthHandler(mgr)
-        opener = urllib2.build_opener(handler)
+        handler = urllib.request.HTTPBasicAuthHandler(mgr)
+        opener = urllib.request.build_opener(handler)
         dest = urlparse.urlunparse((url_p.scheme, url_p.hostname, url_p.path, 
                                     url_p.params, url_p.query, url_p.fragment))
         try:
