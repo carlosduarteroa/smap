@@ -121,7 +121,7 @@ class GroupByTimeOperator(Operator):
  
         # iterate over the groups
 
-        for time in xrange(startts, endts, self.chunk_length):
+        for time in range(startts, endts, self.chunk_length):
             # print "group starting", time
 
             data = map(lambda x: x[np.where((x[:,0] >= time) & 
@@ -151,7 +151,7 @@ class GroupByTimeOperator(Operator):
         return rv
 
 def P(x):
-    return map(lambda i: [x] * i, xrange(0, 5))
+    return map(lambda i: [x] * i, range(0, 5))
 
 class GroupByDatetimeField(Operator):
     """Grouping operator which works using datetime objects
@@ -308,7 +308,7 @@ class GroupByDatetimeField(Operator):
             # what ya want.
             if self.snap_times:
                 t = dtutil.dt2ts(bin_start)
-                for j in xrange(0, len(opdata)):
+                for j in range(0, len(opdata)):
                     opdata[j][:, 0] = t * 1000
             output = extend(output, opdata)
 
@@ -330,7 +330,7 @@ class GroupByDatetimeField(Operator):
 
     def process(self, data):
         rv = [null] * len(self.inputs)
-        for i in xrange(0, len(self.inputs)):
+        for i in range(0, len(self.inputs)):
             self.state[i]['first'] = data.first
             self.state[i]['last'] = data.last
             self.state[i]['region'] = data.region
@@ -449,7 +449,7 @@ class InterpolateOperator(Operator):
     def process(self, data):
         N = len(self.inputs)
         rv = [null] * N
-        for i in xrange(N):
+        for i in range(N):
             if data[i] is None: continue
             if (len(data[i][:,0]) == 0 or len(data[i][:,1]) == 0): continue
             rv[i], self.state[i] = self.process_one(data[i], self.tzs[i], 
@@ -495,7 +495,7 @@ class GroupByTagOperator(Operator):
                           for x in group_inputs]
 
         for o in self.operators:
-            for i in xrange(0, len(o.outputs)):
+            for i in range(0, len(o.outputs)):
                 o.outputs[i]['Metadata/Extra/Operator'] = 'tgroup(%s, %s)' % (group_tag,
                                                                               str(o))
                                                                        
@@ -507,7 +507,7 @@ class GroupByTagOperator(Operator):
                                                    self.operators)))
 
     def process(self, data):
-        rv = [[] for x in xrange(0, len(self.operators))]
+        rv = [[] for x in range(0, len(self.operators))]
         for i, op in enumerate(self.operators):
             input_data = [data[j] for j in self.group_idx[i]]
             rv[i] = self.operators[i](input_data)
@@ -636,7 +636,7 @@ class VectorizeOperator(Operator):
         self.block_streaming = reduce(operator.__or__, 
                                       (op.block_streaming for op in self.ops), 
                                       False)
-        print "blocking", self.block_streaming
+        print("blocking", self.block_streaming)
         Operator.__init__(self, inputs, 
                           util.flatten(map(operator.attrgetter('outputs'), 
                                            self.ops)))
@@ -644,7 +644,7 @@ class VectorizeOperator(Operator):
     def process(self, data):
         return util.flatten(op(data) for op in self.ops)
 
-for n in xrange(0, 10):
+for n in range(0, 10):
     VectorizeOperator.operator_constructors.append(tuple([lambda _: _] * n))
 
 class HistOperator(ParallelSimpleOperator):

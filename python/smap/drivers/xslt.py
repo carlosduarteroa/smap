@@ -139,7 +139,7 @@ class XMLDriver(FetchDriver):
                     else:
                         rtime = time.time()
                     rval = self.parse_val(ts, r.find("Value").text)
-                except (ValueError, TypeError), e:
+                except (ValueError, TypeError) as e:
                     log.err()
                     continue
                 self._add(path, rtime, rval)

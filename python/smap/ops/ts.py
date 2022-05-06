@@ -94,7 +94,7 @@ class DayOfWeekOperator(Operator):
             ma = MaskedDTList(vec[:, 0], self.tzs[i])
             # find the days we're interested in
             takes = filter(None,
-                           map(lambda (i, ts): i if ts.isoweekday() in self.days else None,
+                           map(lambda i, ts: i if ts.isoweekday() in self.days else None,
                                enumerate(ma)))
             rv.append(vec[takes, :])
         return rv

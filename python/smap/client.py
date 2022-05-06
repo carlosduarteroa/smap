@@ -46,7 +46,7 @@ class SmapClient:
         try:
             fp = urllib2.urlopen(self.base)
             fp.read()
-        except Exception, e:
+        except Exception as e:
           raise util.SmapException("sMAP source not found.")
 
     def get_state(self, path):
@@ -155,12 +155,12 @@ if __name__=='__main__':
     c = SmapClient("http://127.0.0.1:8080")
     path = '/instrument0/sensor0'
 
-    print 'Tags:', c.tags(path), '\n'
-    print 'Current reading:', c.get_state(path), '\n'
-    print 'Contents:', c.contents(), '\n'
+    print('Tags:', c.tags(path), '\n')
+    print('Current reading:', c.get_state(path), '\n')
+    print('Contents:', c.contents(), '\n')
 
     path = '/binary/point0'
-    print 'Setting state succeeds:', c.set_state(path, 0), '\n'
+    print('Setting state succeeds:', c.set_state(path, 0), '\n')
 
     path = '/binary/point0'
     start_time = time.time() * 1000 + 20 * 1000 # 20s from now
@@ -175,9 +175,9 @@ if __name__=='__main__':
         ]   
     }]
     del_uuids = c.submit_jobs(jobs)
-    print 'Submit a job:', del_uuids, '\n'
+    print('Submit a job:', del_uuids, '\n')
 
-    print 'Cancel the job:', c.cancel_jobs(del_uuids), '\n'
+    print('Cancel the job:', c.cancel_jobs(del_uuids), '\n')
 
     jobs.append({
         'After': 'Job1',
@@ -190,7 +190,7 @@ if __name__=='__main__':
         ]
     })
     del_uuids = c.submit_jobs(jobs)
-    print 'Submit two jobs:', del_uuids, '\n'
+    print('Submit two jobs:', del_uuids, '\n')
 
     del_uuids.pop(0)
-    print 'Cancelling the second job cancels the queue:', c.cancel_jobs(del_uuids), '\n'
+    print('Cancelling the second job cancels the queue:', c.cancel_jobs(del_uuids), '\n')

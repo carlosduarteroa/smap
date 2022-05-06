@@ -90,10 +90,10 @@ class DataResource(resource.Resource):
         d.addCallback(lambda x: self._check_subscriber(request, x))
 
         # if so, add the data
-        d.addCallback(lambda (subid, obj): self._add_data(subid, obj))
+        d.addCallback(lambda subid, obj: self._add_data(subid, obj))
         def add_success(x):
             if not x:
-                print x
+                print(x)
                 request.setResponseCode(500)
             settings.metrics.increment("add_count")
             request.finish()

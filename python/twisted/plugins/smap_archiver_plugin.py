@@ -71,9 +71,9 @@ class ArchiverServiceMaker(object):
             import objgraph
             import gc
             def stats():
-                print gc.collect()
-                print
-                print '\n'.join(map(str, objgraph.most_common_types(limit=10)))
+                print(gc.collect())
+                print("")
+                print('\n'.join(map(str, objgraph.most_common_types(limit=10))))
             task.LoopingCall(stats).start(2)
 
 
@@ -105,7 +105,7 @@ class ArchiverServiceMaker(object):
             mongo_repub = None
 
         if settings.conf['database']['republish']:
-            print "enabling pg republishing"
+            print("enabling pg republishing")
             pg_repub = republisher.PostgresEndpoint(cp)
         else:
             pg_repub = None
@@ -141,8 +141,8 @@ try:
     from smap.subscriber import subscribe
     from smap.ssl import SslServerContextFactory
     from smap.archiver.server import getSite
-except ImportError, e:
-    print e
+except ImportError as e:
+    print(e)
     pass
 else:
     serviceMaker = ArchiverServiceMaker()

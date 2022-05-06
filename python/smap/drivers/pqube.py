@@ -128,11 +128,11 @@ class PQube(SmapDriver):
         try:
             fp = urllib2.urlopen(self.serverloc + '/Meters.htm', timeout=15)
             html = fp.read()
-        except IOError, e:
+        except IOError as e:
             logging.error("IOError while reading pqube: url: %s exception: %s" % 
                           (self.serverloc, str(e)))
             return
-        except httplib.HTTPException, e:
+        except httplib.HTTPException as e:
             logging.error("HTTP exception reading pqube: url: %s exception: %s" % 
                           (self.serverloc, str(e)))
             return

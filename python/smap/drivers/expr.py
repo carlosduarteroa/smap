@@ -97,7 +97,7 @@ Configuration options:
 
         self.loading = True
         for g, inputs in groups.iteritems():
-            print "adding group", g, "(%i/%i)" % (i, len(groups))
+            print("adding group", g, "(%i/%i)" % (i, len(groups)))
             i += 1
             for op in self.ops:
                 op_instance = op.ast(inputs)

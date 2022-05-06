@@ -54,7 +54,8 @@ import mechanize
 import datetime
 import zipfile
 from lxml import etree
-from cStringIO import StringIO
+#from cStringIO import StringIO
+import io as StringIO
 
 from smap.drivers import xml
 
@@ -87,29 +88,29 @@ def update(opts):
         req.add_header("User-Agent", agent) 
         return br.open(req)
 
-    print "Get login page"
+    print("Get login page")
     req = mechanize.Request("https://www.pge.com/myenergyweb/appmanager/pge/customer")
     req.add_header("User-Agent", agent)
     br.open(req)
 
-    print "Logging in"
+    print("Logging in")
     f = select_form(br.forms(), 'login')
     f['USER'] = opts.get('Username')
     f['PASSWORD'] = opts.get('Password')
     request(f.click())
 
-    print "Continue to opower"
+    print("Continue to opower")
     request(br.click_link(text="My Usage"))
 
-    print "Continue pg&e-side sso"
+    print("Continue pg&e-side sso")
     f = br.forms().next()           # get the first form
     request(f.click())
 
-    print "Continue the opower sso"
+    print("Continue the opower sso")
     f = br.forms().next()
     request(f.click())
 
-    print "Downloading all data"
+    print("Downloading all data")
     request(br.click_link(url_regex=re.compile(".*export-dialog$")))
 
     f = br.forms().next()
@@ -134,7 +135,7 @@ def update(opts):
     rv = {}
     for name in data.namelist():
         if name.endswith("/"): continue
-        print "extracting", name
+        print("extracting", name)
         # with open(os.path.join(outdir, name), 'wb') as fp:
         # fp.write(data.read(name))
         

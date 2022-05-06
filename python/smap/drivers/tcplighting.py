@@ -129,7 +129,7 @@ class TCP(driver.SmapDriver):
     def read(self):
         devices = get_states(self.posturl, self.token)
         for device in devices:
-            print '/'+str(device[0])+'/state'
+            print('/'+str(device[0])+'/state')
             self.add('/'+str(device[0])+'/state',int(device[1]))
             self.add('/'+str(device[0])+'/power',float(device[2]))
             level = int(device[3]) if int(device[1]) else 0
@@ -162,7 +162,7 @@ class BrightnessActuator(TCPLActuator, actuate.ContinuousIntegerActuator):
         TCPLActuator.__init__(self, **opts)
 
     def set_state(self, request, state):
-        print request, state
+        print(request, state)
         if int(state) > 100:
             state = 100
         elif int(state) < 0:

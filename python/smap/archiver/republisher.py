@@ -83,7 +83,7 @@ class RepublishEndpoint(object):
         query = "select distinct uuid where (%s)" % q
         try:
             d = parser.runquery(self.db, query)
-        except SmapException, e:
+        except SmapException as e:
             return defer.fail(e)
         else:
             d.addCallback(self.set_topics)

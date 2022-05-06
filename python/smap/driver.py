@@ -148,10 +148,10 @@ class SmapDriver(object):
         return self.__inst.loading
     def _set_loading(self, val):
         if val:
-            print "starting load"
+            print("starting load")
             self.__inst.loading = True
         else:
-            print "finishing load"
+            print("finishing load")
             self.__inst.reports.update_subscriptions()
             self.__inst.loading = False
     loading = property(_get_loading, _set_loading)
@@ -171,16 +171,16 @@ class SmapDriver(object):
         end = self.start_dt + self.load_chunk_size
         if end > self.end_dt: end = self.end_dt
 
-        print "loading", self.start_dt, '-', self.end_dt
+        print("loading", self.start_dt, '-', self.end_dt)
         self.start_dt = self.start_dt + self.load_chunk_size
-        print start, end
+        print(start, end)
         d = defer.maybeDeferred(self.update, start, end)
         d.addCallback(self.update)
         d.addCallback(lambda _: self._flush())
         d.addCallback(self._load_time_chunk)
 
         def err(e):
-            print e
+            print(e)
         d.addErrback(err)
 
         return d

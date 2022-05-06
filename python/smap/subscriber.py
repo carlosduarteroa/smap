@@ -54,7 +54,7 @@ class SmapConsumer(resource.Resource):
     def add(self, report):
         try:
             util.push_metadata(report)
-        except Exception, e:
+        except Exception as e:
             traceback.print_exc()
         for path, val in report.iteritems():
             with open('data/' + path.replace('/', '-'), 'a') as fp:

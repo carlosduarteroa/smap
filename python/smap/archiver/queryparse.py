@@ -148,13 +148,13 @@ def t_NUMBER(t):
         try:
             t.value = float(t.value)
         except ValueError:
-            print "Invalid floating point number", t.value
+            print("Invalid floating point number", t.value)
             t.value = 0
     else:
         try:
             t.value = int(t.value)
         except ValueError:
-            print "Integer value too large %d", t.value
+            print("Integer value too large %d", t.value)
             t.value = 0
         
     return t
@@ -240,11 +240,11 @@ def build_setstring(setvals, wherevals):
                 raise qg.QueryException("Too many regexes in set.  Only one supported!")
 
     if regex == None:
-        new_tags = ' || '.join(map(lambda (t,v): "hstore(%s, %s)" % 
+        new_tags = ' || '.join(map(lambda t,v: "hstore(%s, %s)" % 
                                    (escape_string(t), escape_string(v)),
                                    setvals))
     else:
-        new_tags = ' || '.join(map(lambda (t,v): "hstore(%s, regexp_replace(metadata -> %s, '^.*%s.*$', %s))" % 
+        new_tags = ' || '.join(map(lambda t,v: "hstore(%s, regexp_replace(metadata -> %s, '^.*%s.*$', %s))" % 
                                    (escape_string(t), 
                                     regex.args[0],
                                     regex.args[1][1:-1].replace('\\\\', '\\'),
@@ -911,9 +911,9 @@ class QueryParser:
         logging.getLogger("queries.sql").info(q[1])
 
         if verbose:
-            print q[1]
+            print(q[1])
         if not run: return defer.succeed([])
-        
+
         deferreds = []
 
         for ext_, q_ in zip(ext[1:], q[1:]):
@@ -1006,7 +1006,7 @@ if __name__ == '__main__':
             try:
                 pprint.pprint(json.loads(data))
             except:
-                print data
+                print(data)
 
         def finish(self):
             pass

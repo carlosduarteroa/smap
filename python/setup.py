@@ -42,10 +42,10 @@ if os.path.basename(os.getcwd()) == 'python':
 
 # build modbus extension module
 modbus_module = Extension('smap.iface.modbus._TCPModbusClient',
-                          sources=map(lambda f: "smap/iface/modbus/" + f,
+                          sources=list(map(lambda f: "smap/iface/modbus/" + f,
                                       ["TCPModbusClient_wrap.c", "TCPModbusClient.c",
                                        "utility.c", "crc16.c", "DieWithError.c",
-                                       "HandleModbusTCPClient.c"]))
+                                       "HandleModbusTCPClient.c"])))
 
 inc_dir = ['bacnet-stack-0.6.0/include', 
            'bacnet-stack-0.6.0/demo/object',
@@ -78,9 +78,12 @@ def git_rev():
         # current version in VERSION, and include it in MANIFEST.in
         version = subprocess.check_output(['git', 'rev-parse', 'HEAD'])
         with open('VERSION', 'w') as fp:
-            print >>fp, version
+            print(version, file=fp)
+        # decode if version is in bytes
+        if isinstance(version, bytes):
+          version = version.decode("utf-8")
         return version
-    except subprocess.CalledProcessError, e:
+    except subprocess.CalledProcessError as e:
         return open('VERSION', 'r').read()
 
 
@@ -97,8 +100,7 @@ setup(name="Smap",
         "smap.drivers", 
         "smap.contrib",
         "smap.ops",
-
-	"twisted.plugins",
+        "twisted.plugins",
 
         # smap archiver components
         "smap.archiver",
