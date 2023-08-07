@@ -217,7 +217,7 @@ uuids.  Attempts to use cached data and load missing data in parallel.
 
         # insert all the new data and return the result
         rv = []
-        for u in uuids:
+        for uidx, u in enumerate(uuids):
             loaddata = []
             for drange, url in data[u][0]:
                 if url != None and len(newdata[url][1]) > 0:
