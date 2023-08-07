@@ -85,7 +85,7 @@ def lookup_operator_by_name(name, args, kwargs):
         for proto in installed_ops[name].operator_constructors:
             if len(proto) != len(args): continue
             try:
-                alist = map(lambda (fn, a): fn(a), zip(proto, args))
+                alist = map(lambda fn, a: fn(a), zip(proto, args))
                 kwargs_ = kwargs
             except ValueError:
                 continue
@@ -130,7 +130,7 @@ class OperatorApplicator(object):
             if (self.chunk_idx != None and 
                 self.chunk_idx == self.chunk_loaded_idx):
                 return self.load_chunk()
-        except Exception, e:
+        except Exception as e:
             self.abort(failure.Failure(e))
 
     def stopProducing(self):
@@ -151,7 +151,7 @@ class OperatorApplicator(object):
 
         # sort the streamids to be in the same order as the operator inputs
         meta_uid_order = dict(zip(map(operator.itemgetter('uuid'), opmeta), 
-                                  xrange(0, len(opmeta))))
+                                  range(0, len(opmeta))))
         self.streamids = data[1][1]
         self.streamids.sort(key=lambda elt: meta_uid_order[elt[0]])
 
@@ -184,7 +184,7 @@ class OperatorApplicator(object):
                 name, size = self.sketch
                 # try to load things in readingdb-friendly 10000-point chunks
                 self.chunk_length = size * 9990
-                print "Final sketch:", self.sketch
+                print("Final sketch:", self.sketch)
 
         self.resumeProducing()
 
@@ -285,7 +285,8 @@ class OperatorApplicator(object):
                 self.consumer.unregisterProducer()
                 self.consumer.finish()
 
-    def build_result(self, (d, s)):
+    def build_result(self, d_s):
+        d, s = d_s
         obj = dict(s)
         if isinstance(d, np.ndarray):
             obj['Readings'] = d.tolist()

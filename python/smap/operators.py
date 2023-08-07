@@ -335,7 +335,7 @@ class OperatorDriver(driver.SmapDriver):
         else:
             d.addCallback(self.load_crossection)
         def err(e):
-            print e
+            print(e)
         d.addErrback(err)
 
         return d
@@ -394,7 +394,7 @@ def extend(a1, a2):
     """Extend data vector a1 with vector a2"""
     assert(len(a1) == len(a2))
     rv = [None] * len(a1)
-    for i in xrange(0, len(a2)):
+    for i in range(0, len(a2)):
         if a1[i].shape[0] == 0:
             rv[i] = a2[i]
         elif len(a2[i]):
@@ -496,7 +496,7 @@ class VectorOperator(Operator):
         initargs['axis'] = self.axis
         self.name = "%s(%s)" % (self.name, 
                                 ",".join(list(map(str, opargs)) +
-                                         map(lambda (k, v): str(k) + "=" + str(v), 
+                                         map(lambda k, v: str(k) + "=" + str(v), 
                                              initargs.iteritems())))
 
         # if we operate in parallel then we also produce n output

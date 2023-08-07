@@ -75,10 +75,10 @@ def make_field_idxs(type, header, location=None):
             ddups[name] = ddups.get(name, 0) + 1
     for k, v in ddups.iteritems():
         if v > 1:
-            print "WARNING:", v, "matching channels for", k
-            print header
-            print paths
-            print ddups
+            print("WARNING:", v, "matching channels for", k)
+            print(header)
+            print(paths)
+            print(ddups)
     return paths, map_
 
 class BMOLoader(smap.driver.SmapDriver):
@@ -97,7 +97,7 @@ class BMOLoader(smap.driver.SmapDriver):
         self.set_metadata('/', {
                 'Extra/Driver' : 'smap.drivers.obvius.bmo.BMOLoader' })
 
-        print self.url, self.rate
+        print(self.url, self.rate)
 
     def start(self):
         # periodicSequentialCall(self.update).start(self.rate)
@@ -151,7 +151,7 @@ class BMOLoader(smap.driver.SmapDriver):
              self.enddt.day,
              self.enddt.year)
         url += "&mnuEndTime=%i%%3A%i" % (self.enddt.hour, self.enddt.minute)
-        print "loading", url
+        print("loading", url)
 
         self.fp = httputils.load_http(url, as_fp=True, auth=auth.BMOAUTH)
         if not self.fp:
@@ -159,7 +159,7 @@ class BMOLoader(smap.driver.SmapDriver):
         self.reader = csv.reader(self.fp, dialect='excel-tab')
         header = self.reader.next()
         if len(header) == 0:
-            print "Warning: no data from", self.url
+            print("Warning: no data from", self.url)
             raise core.SmapException("no data!")
         try:
             self.field_map, self.map = make_field_idxs(self.meter_type, header, 
@@ -199,7 +199,7 @@ class BMOLoader(smap.driver.SmapDriver):
                 readcnt += 1
                 if readcnt > 100:
                     return data
-        except Exception, e:
+        except Exception as e:
             self.fp.close()
             self.reader = None
             raise e

@@ -41,10 +41,10 @@ from twisted.web.http_headers import Headers
 from twisted.python import log
 import logging
 
-import util
-import disklog
-import sjson as json
-from contrib import client
+import smap.util as util
+import smap.disklog as disklog
+import smap.sjson as json
+from smap.contrib import client
 from smap.formatters import get_formatter
 from smap.iface.plotly import PlotlyStream
 

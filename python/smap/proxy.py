@@ -115,13 +115,13 @@ class SmapProxyEntity(resource.Resource):
                     self.host, self.port = url.netloc.split(':')
                     self.rpath = url.path
                     self.port = int(self.port)
-                except Exception, e:
+                except Exception as e:
                     log.err()
                     self.host, self.port = url.netloc, 80
                     self.rpath = '/'
                 self.update(resp)
                 return self
-            except Exception, e:
+            except Exception as e:
                 return None
 
         d.addCallback(successCb)
@@ -169,7 +169,8 @@ class ProxyResource(resource.Resource):
         request.finish()
         return server.NOT_DONE_YET
 
-    def update_proxy(self, (name, url)):
+    def update_proxy(self, name_url):
+        name, url = name_url
         this_inst = SmapProxyEntity(self.inst, name)
         d = this_inst.load(url)
         def rootCb(mgr):

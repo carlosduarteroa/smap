@@ -39,7 +39,7 @@ import datetime, time
 import traceback
 import urlparse
 import base64
-import StringIO
+import io as StringIO
 
 import sensordb
 import obvius
@@ -82,10 +82,10 @@ def make_field_idxs(type, header, location=None):
 
     for k, v in ddups.iteritems():
         if v > 1:
-            print "WARNING:", v, "matching channels for", k
-            print header
-            print paths
-            print ddups
+            print("WARNING:", v, "matching channels for", k)
+            print(header)
+            print(paths)
+            print(ddups)
     return paths, map_
 
 class BMOLoader(smap.driver.SmapDriver):
@@ -178,7 +178,7 @@ class BMOLoader(smap.driver.SmapDriver):
         reader = csv.reader(StringIO.StringIO(body), dialect='excel-tab')
         header = reader.next()
         if len(header) == 0:
-            print "Warning: no data from", self.url
+            print("Warning: no data from", self.url)
             raise core.SmapException("no data!")
         try:
             self.field_map, self.map = make_field_idxs(self.meter_type, header, 

@@ -33,7 +33,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 import sys
 import re
 import pprint
-from BeautifulSoup import BeautifulSoup as bs
+from bs4 import BeautifulSoup as bs
 from smap.iface.http.httputils import load_html
 from optparse import OptionParser
 import ConfigParser
@@ -236,6 +236,6 @@ elif opts.load:
 #                 print '/' + obvius.to_pathname(k) + '/' + obvius.to_pathname(v.keys()[0]) + ',' + k
 
 elif opts.db:
-    print "generate sensordb"
+    print("generate sensordb")
     for location, devs in devices.iteritems():
-        print devs
+        print(devs)

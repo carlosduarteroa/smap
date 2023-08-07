@@ -37,7 +37,7 @@ import uuid
 from io import StringIO
 from avro import schema, io
 
-import util
+import smap.util as util
 import pkgutil
 
 NAMESPACE = "edu.berkeley.cs.local"

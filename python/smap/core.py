@@ -47,7 +47,7 @@ from smap import actuate
 from smap import jobs
 from smap.interface import *
 from smap.checkers import datacheck
-from util import SmapException, SmapSchemaException
+from smap.util import SmapException, SmapSchemaException
 
 @implementer(ITimeseries)
 class Timeseries(dict):
@@ -563,7 +563,7 @@ sMAP reporting functionality."""
             raise SmapException("add failed: no such path: %s" % path)
 
     def _add_parents(self, path):
-        for i in xrange(0, len(path)):
+        for i in range(0, len(path)):
             if not self.get_collection(util.join_path(path[:i])):
                 self.add_collection(util.join_path(path[:i]))
 

@@ -46,7 +46,8 @@ class Port6(udp.Port):
             s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         return s
 
-    def _buildAddr(self, (host, port, flowinfo, scopeid)):
+    def _buildAddr(self, host_port_flowinfo_scopeid):
+        host, port, flowinfo, scopeid = host_port_flowinfo_scopeid
         return address._ServerFactoryIPv6Address('UDP6', host, port, flowinfo, scopeid)
 
     def getHost(self):

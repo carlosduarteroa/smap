@@ -55,8 +55,8 @@ class SmapSchemaException(SmapException):
     """Exception generated if a json object doesn't validate as the
 appropriate kind of schema"""
 
-is_string = lambda x: isinstance(x, str) or isinstance(x, unicode)
-is_integer = lambda x: isinstance(x, int) or isinstance(x, long)
+is_string = lambda x: isinstance(x, str) # or isinstance(x, unicode)
+is_integer = lambda x: isinstance(x, int) # or isinstance(x, long)
 def to_bool(s):
     if isinstance(s, bool): return s
     elif isinstance(s, int): return not s == 0
@@ -67,7 +67,7 @@ def now():
 
 def split_path(path):
     path = re.split('/+', path)
-    return filter(lambda x: len(x), path)
+    return list(filter(lambda x: len(x), path))
 
 def join_path(path):
     return '/' + '/'.join(path)

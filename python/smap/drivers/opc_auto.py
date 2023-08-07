@@ -75,7 +75,7 @@ class Driver(SmapDriver):
         self.opc.close()
 
     def make_path(self, point):
-	return point.replace("\\","/")
+        return point.replace("\\","/")
 
     def parse_pointfile(self, fp):
         pointdfns = {}
@@ -107,14 +107,14 @@ class Driver(SmapDriver):
 
 
     def connect(self):
-        print "attempting OPC connection to", self.opc_name
+        print("attempting OPC connection to", self.opc_name)
         self.opc = OpenOPC.open_client(host=self.opc_host)
         self.opc.connect(self.opc_name, self.opc_host)
         if self.points is None:
             pointlist = self.opc.list(recursive=True, flat=True)
             self.points = self.parse_pointlist(pointlist)
         props = self.opc.properties(self.points.keys())
-        print "loaded", len(props), "properties"
+        print("loaded", len(props), "properties")
         points = {}
         for point, pid, key, val in props:
             key = key.decode().encode('ascii','ignore')
@@ -132,7 +132,7 @@ class Driver(SmapDriver):
             unit = str(meta.get('OpcDA/' + self.unit_tag, 'None'))
             dtype = meta.get('OpcDA/ItemCanonicalDataType', None)
             if not dtype:
-                print "no datatype tag in", name
+                print("no datatype tag in", name)
                 continue
             dtype = 'double'
             if not self.get_timeseries(name):

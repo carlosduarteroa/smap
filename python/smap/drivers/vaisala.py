@@ -99,7 +99,7 @@ class VaisalaDriver(SmapDriver):
             self.log.debug("Read: " + line)
             try:
                 self.process(line)
-            except Exception, e:
+            except Exception as e:
                 self.log.error("Error in update: " + str(e))
 
         def process(self, line):

@@ -111,7 +111,7 @@ class ModbusDriver(SmapDriver):
         """Poll the Modbus/TCP device and interpret the response"""
                     
         regs = registers.keys()
-        for offset in xrange(min(regs), max(regs) + self.MAX_READ_RANGE, 
+        for offset in range(min(regs), max(regs) + self.MAX_READ_RANGE, 
                              self.MAX_READ_RANGE):
             try:
                 data = self.m.read(self.base + offset, self.MAX_READ_RANGE,
@@ -121,7 +121,7 @@ class ModbusDriver(SmapDriver):
                 self.m.close()
                 self.m = self.CLIENT(self.host, self.port, self.slaveaddr)
                 return
-            except Exception, e:
+            except Exception as e:
                 log.err("Exception polling PQube meter at (%s:%i): %s" % 
                         (self.host, self.port, str(e)))
                 return
@@ -130,7 +130,7 @@ class ModbusDriver(SmapDriver):
                     log.err("Wrong data length from (%s:%i)" % (self.host, self.port))
                     return
 
-            for i in xrange(0, len(data), 2):
+            for i in range(0, len(data), 2):
                 reg = registers.get(offset + (i / 2), None)
                 if reg:
                     val = reg.parser.unpack(data[i:i+reg.parser.size])[0]

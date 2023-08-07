@@ -31,7 +31,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
-import util
+import smap.util as util
 import time
 from twisted.python import log
 

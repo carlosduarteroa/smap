@@ -457,7 +457,7 @@ def guess_conf(type, location, header):
                             name.endswith("Max") or \
                             name.startswith("time"): 
                         continue
-                    print "%s ... %s ... %s" % (col, name, unit)
+                    print("%s ... %s ... %s" % (col, name, unit))
                     conf["sensors"].append((col, MAYBEFLOATPAT, "", util.str_path(name), unit))
         return conf
 #     elif type.startswith("AcquiSuite 8811-1"):

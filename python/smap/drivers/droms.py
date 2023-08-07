@@ -96,6 +96,6 @@ class Driver(SmapDriver):
         api_path = "api/v1/meters"
         files = {'file': ('meterdata.zip', open('meterdata.zip', 'rb'))}
         url = tenant_url + api_path
-        print url
+        print(url)
         r = requests.post(url, auth=self.auth, files=files)
-        print r.text
+        print(r.text)

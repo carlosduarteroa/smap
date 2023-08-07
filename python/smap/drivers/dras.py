@@ -62,7 +62,7 @@ class Driver(SmapDriver):
     def read(self):
         r = self.s.get(self.url, verify=False)
         e = etree.fromstring(r.text)
-        print r.text
+        print(r.text)
         for t in e.iter():
             if 'EventStatus' in t.tag:
                 status = t.text
@@ -75,5 +75,5 @@ class Driver(SmapDriver):
             self.dr.respond()
         if not active and self.prev:
             self.dr.revert()
-        
+
         self.prev = active

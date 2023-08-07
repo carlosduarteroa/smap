@@ -82,7 +82,7 @@ class ForecastTempDriver(SmapDriver):
             thisTime=time.mktime(time.strptime(readTime,'%Y-%m-%dT%H:%M:%S'))+(int(tzhour.group(1)) * 60 * 60)
 
             if self.lastProduced == None or self.lastProduced != thisTime:
-                print "Updated reading"
+                print("Updated reading")
                 self.lastProduced = thisTime
                 tempsPat=re.compile('<value>(.*)</value>')
                 temps=tempsPat.finditer(xmlStr)
@@ -117,10 +117,10 @@ class ForecastTempDriver(SmapDriver):
            
             xmlData = urllib2.urlopen(site)
         except urllib2.URLError:
-            print "urle"
+            print("urle")
             pass
         except IOError:
-            print "ioe"
+            print("ioe")
             pass        
         
         xmlStr=str(xmlData.read())

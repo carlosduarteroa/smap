@@ -1,0 +1,13 @@
+Twisted>=13.2.0
+zope.interface>=4.1.0
+avro>=1.7.6
+configobj>=5.0.2
+pyOpenSSL>=0.14
+python-dateutil>=2.2
+autobahn>=0.8
+beautifulsoup4
+ply
+protobuf>=3.4.0
+scipy>=0.9.0
+pymongo
+service-identity

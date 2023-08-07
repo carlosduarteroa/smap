@@ -58,7 +58,7 @@ Arg (optional, default=0.9): alpha.
         prev = inputs[0][1]
 
     inputs[0][1] = alpha * prev + (1 - alpha) * inputs[0][1]
-    for i in xrange(1, len(inputs)):
+    for i in range(1, len(inputs)):
         inputs[i][1] = alpha * inputs[i - 1][1] + (1 - alpha) * inputs[i][1]
 
     return inputs, {'alpha': alpha, 'prev': inputs[-1][1]}
@@ -115,7 +115,7 @@ class SubsampleOperator(GroupByTimeOperator):
                                      chunk_length=period, 
                                      snap_times=True) 
         self.name = 'subsample-' + str(period)
-        for i in xrange(len(self.inputs)):
+        for i in range(len(self.inputs)):
             self.outputs[i]['uuid'] = str(uuid.uuid5(uuid.UUID(self.inputs[i]['uuid']), self.name))
 
 class NonZeroOperator(operators.Operator):
@@ -160,7 +160,7 @@ class WhereOperator(operators.Operator):
         results = map(lambda x: pat.match(x.get(tag, '')), inputs)
         self.takes = [i for (i, elt) in enumerate(results) if elt]
         if len(self.takes) == 0:
-            print "WARNING: no points found:", self.name
+            print("WARNING: no points found:", self.name)
         operators.Operator.__init__(self, inputs, 
                                     [inputs[i] for i in self.takes])
 

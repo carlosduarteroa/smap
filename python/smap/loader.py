@@ -32,7 +32,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os, sys
 import uuid
-import ConfigParser
+from configparser import ConfigParser
 import configobj
 
 try:
@@ -40,11 +40,11 @@ try:
 except ImportError:
     import collections as ordereddict
 
-import core
-import util
-import driver
-import smapconf
-import checkers
+import smap.core as core
+import smap.util as util
+import smap.driver as driver
+import smap.smapconf as smapconf
+import smap.checkers as checkers
 
 class SmapLoadError(core.SmapException):
     """An error was encountered loading a config file"""
@@ -126,7 +126,7 @@ contain a ``uuid`` key to set the root identifier for the source.
         found = path
     if not found:
       raise Exception("Config file %s not found." % file)
-    print "Loading config file:", found
+    print("Loading config file:", found)
 
     conf = configobj.ConfigObj(found, indent_type='  ')
 
@@ -144,14 +144,14 @@ contain a ``uuid`` key to set the root identifier for the source.
     # we need the root to have a uuid
     inst = core.SmapInstance(conf['/']['uuid'], **instargs)
     if 'Properties/Timezone' in conf['/']:
-        print "Setting default timezone to", conf['/']['Properties/Timezone']
+        print("Setting default timezone to", conf['/']['Properties/Timezone'])
         core.Timeseries.DEFAULTS['Properties/Timezone'] = conf['/']['Properties/Timezone']
 
     inst.loading = True
     reports = []
 
     for s in conf:
-        print "Loading section", s
+        print("Loading section", s)
         if s.startswith('report'):
             resource = conf[s].get('ReportResource', '/+')
             format = conf[s].get('Format', 'json')
@@ -159,7 +159,7 @@ contain a ``uuid`` key to set the root identifier for the source.
             max_age = int(max_age) if max_age != None else None
 
             dest = [conf[s]['ReportDeliveryLocation']]
-            for i in xrange(0, 10):
+            for i in range(0, 10):
                 if 'ReportDeliveryLocation%i' % i in conf[s]:
                     dest.append(conf[s]['ReportDeliveryLocation%i' % i])
 
@@ -184,7 +184,7 @@ contain a ``uuid`` key to set the root identifier for the source.
             # path sections must start with a '/'
             # other sections might be present and could be parsed by
             # other parts of the program
-            print "Warning: skipping section", s, "since it does not begin with a '/'"
+            print("Warning: skipping section", s, "since it does not begin with a '/'")
             continue
         elif len(sections) and not util.norm_path(s) in sections: 
             # skip all but the listed sections if we were asked to

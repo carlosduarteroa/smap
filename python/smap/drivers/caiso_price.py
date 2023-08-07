@@ -38,8 +38,8 @@ Each price feed provides total price, loss price, energy price and congestion co
 
 import zipfile
 import urllib2
-import StringIO
-import BeautifulSoup
+import io as StringIO
+from bs4 import BeautifulSoup
 import datetime
 
 import sys
@@ -90,7 +90,7 @@ class CaIsoPrice(SmapDriver):
 
   def get_readings(self, market, start_date, stop_date): 
     readings = {'total_price': [], 'loss': [], 'energy': [], 'congestion': []}
-    print "get_readings", market
+    print("get_readings", market)
     if market == 'DAM':
       q = 'PRC_LMP'
       m = 'DAM'
@@ -160,7 +160,7 @@ class CaIsoPrice(SmapDriver):
       if len(readings[k]) != num_readings:
         raise Exception('Missing readings')
 
-      readings[k] = sorted(readings[k], key=lambda (t, v): t)
+      readings[k] = sorted(readings[k], key=lambda t, v: t)
 
     return readings
 
@@ -183,7 +183,7 @@ class CaIsoPrice(SmapDriver):
         try:
           readings = self.get_readings(market, start, stop)
           _push_data(readings, market)
-        except Exception, e:
+        except Exception as e:
           logging.exception('Error getting reading')
 
     # Continuously get new data
@@ -202,6 +202,6 @@ class CaIsoPrice(SmapDriver):
         _push_data(readings, market)
         # self.last_reading = rt
 
-    except Exception, e:
+    except Exception as e:
       logging.exception('Error getting reading')
 
